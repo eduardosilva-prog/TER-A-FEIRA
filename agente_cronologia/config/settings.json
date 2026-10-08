@@ -1,0 +1,27 @@
+{
+  "timezone": "America/Sao_Paulo",
+  "start_date": "2024-01-01",
+  "end_date": "2026-12-31",
+  "overlap_days": 7,
+  "max_pages": 100,
+  "request_timeout": 40,
+  "sources": ["espn"],
+  "espn_leagues": ["bra.1", "bra.2", "bra.camp.paulista", "bra.copa_do_brazil", "conmebol.libertadores", "conmebol.sudamericana", "conmebol.america", "fifa.world", "fifa.cwc", "fifa.worldq.conmebol", "fifa.friendly", "fifa.friendly.w"],
+  "openfootball_leagues": [],
+  "openfootball_calendar_leagues": [],
+  "export_filtro": {
+    "tipos": ["Feriado nacional", "Feriado estadual", "Feriado municipal", "Ponto facultativo", "Data comemorativa", "Acontecimento"],
+    "competicoes_futebol": ["Brazilian Serie A", "Brazilian Serie B", "Copa do Brasil", "CONMEBOL Libertadores", "CONMEBOL Sudamericana", "Brazilian Campeonato Paulista", "FIFA World Cup", "FIFA Club World Cup", "FIFA World Cup Qualifying - CONMEBOL", "Copa América"],
+    "selecao": "Brazil"
+  },
+  "promo_entrada": "../promo_semanal/entrada/Ocorrencias_agente.csv",
+  "llm": {
+    "model": "gpt-5-mini",
+    "daily_call_limit": 20,
+    "max_documents_per_run": 10,
+    "max_input_chars": 18000,
+    "max_output_tokens": 4000,
+    "prompt_version": "eventos-v1",
+    "fetch_article": true
+  }
+}

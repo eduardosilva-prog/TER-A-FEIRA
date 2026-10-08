@@ -1,0 +1,69 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Atualizar tudo (cronologia + base EPTV)",
+      "detail": "Roda o agente de cronologia e depois ingere promo_semanal/entrada/ (Ctrl+Shift+B)",
+      "dependsOrder": "sequence",
+      "dependsOn": ["Atualizar cronologia", "Atualizar base EPTV"],
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "Atualizar cronologia",
+      "detail": "Agente: busca jogos na ESPN, exporta e entrega Ocorrencias_agente.csv em promo_semanal/entrada/",
+      "type": "shell",
+      "command": "powershell",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command",
+               "& ./run_daily.ps1; if ($LASTEXITCODE -ne 0) { Write-Host 'Cronologia com falha em alguma fonte; a base EPTV será atualizada mesmo assim.' }; exit 0"],
+      "options": { "cwd": "${workspaceFolder}/agente_cronologia" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Atualizar base EPTV",
+      "detail": "Ingere os arquivos de promo_semanal/entrada/ e regrava BASE_HISTORICA e BASE_SEMANAL",
+      "type": "shell",
+      "command": "python",
+      "args": ["ingestao/atualizar.py"],
+      "options": { "cwd": "${workspaceFolder}/promo_semanal", "env": { "PYTHONIOENCODING": "utf-8" } },
+      "problemMatcher": []
+    },
+    {
+      "label": "Abrir painel Promo",
+      "detail": "Sobe o Streamlit em http://localhost:8502",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "streamlit", "run", "app/app.py", "--server.port", "8502", "--server.headless", "true", "--browser.gatherUsageStats", "false"],
+      "options": { "cwd": "${workspaceFolder}/promo_semanal" },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Carga inicial da base EPTV",
+      "detail": "Reconstrói a base única do zero (arquivos da pasta TERÇA-FEIRAS + export do agente, ~1 min)",
+      "type": "shell",
+      "command": "python",
+      "args": ["ingestao/carga_inicial.py", "--recriar"],
+      "options": { "cwd": "${workspaceFolder}/promo_semanal", "env": { "PYTHONIOENCODING": "utf-8" } },
+      "problemMatcher": []
+    },
+    {
+      "label": "Testes promo_semanal",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "pytest", "-q", "tests"],
+      "options": { "cwd": "${workspaceFolder}/promo_semanal" },
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Testes agente_cronologia",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "unittest", "discover", "-s", "tests"],
+      "options": { "cwd": "${workspaceFolder}/agente_cronologia", "env": { "PYTHONIOENCODING": "utf-8" } },
+      "group": "test",
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+# ------------------------------------------------------------------
+# Dados IBOPE/Kantar: uso restrito pelo Cartão Técnico. NUNCA versionar.
+# ------------------------------------------------------------------
+*.xlsx
+*.xlsm
+*.xls
+*.duckdb
+*.duckdb.wal
+promo_semanal/base/
+promo_semanal/backup/
+promo_semanal/entrada/*
+!promo_semanal/entrada/README.md
+_nao_usados/
+
+# Agente de cronologia: estado local, exports e segredos
+agente_cronologia/state/
+agente_cronologia/exports/
+agente_cronologia/.env
+*.sqlite*
+
+# Python / ferramentas
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+~$*
+*.tmp

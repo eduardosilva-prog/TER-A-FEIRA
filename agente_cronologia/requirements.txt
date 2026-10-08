@@ -1,0 +1,2 @@
+# Banco, HTTP e processamento usam biblioteca padrão; tzdata garante IANA no Windows.
+tzdata>=2024.1
